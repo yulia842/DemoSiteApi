@@ -34,8 +34,7 @@ class Project(models.Model):
         else:
             return 0
 
-  
-    
+
 class ProjectRating(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

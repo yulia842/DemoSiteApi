@@ -6,11 +6,40 @@ from .serializers import SkillSerializer, ProjectSerializer, ProjectRatingSerial
 from rest_framework import viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
+      
 class SkillViewSet(viewsets.ModelViewSet):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
-    authentication_classes = (TokenAuthentication, )
+    authentication_classes = (TokenAuthentication ,)
+
+    @action(methods=['POST'], detail=False)
+    def add_skill(self, request):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = SkillSerializer(data=request.data) 
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()         
+        return Response({"detail": "Skill saved.", "data" : serializer.data}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['DELETE'], detail=True)
+    def remove_skill(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        skill = Skill.objects.get(id=pk)
+        skill.delete()
+        return Response({"detail": "Skill deleted."}, status=status.HTTP_200_OK)
+    
+    @action(methods=['PUT'], detail=True)
+    def update_skill(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        skill = Skill.objects.get(id=pk)
+        serializer = SkillSerializer(skill,data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"detail": "Skill updated."}, status=status.HTTP_200_OK)
+
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
@@ -46,7 +75,33 @@ class ProjectViewSet(viewsets.ModelViewSet):
             response = {'message':'Stars are required'}
             return Response(response, status = status.HTTP_400_BAD_REQUEST)
         
-        
+    @action(methods=['POST'], detail=False)
+    def add_project(self, request):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = ProjectSerializer(data=request.data) 
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()         
+        return Response({"detail": "Project saved.", "data" : serializer.data}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['DELETE'], detail=True)
+    def remove_project(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        project = Project.objects.get(id=pk)
+        project.delete()
+        return Response({"detail": "Project Deleted."}, status=status.HTTP_200_OK)
+    
+    @action(methods=['PUT'], detail=True)
+    def update_project(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        project = Project.objects.get(id=pk)
+        serializer = ProjectSerializer(project,data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"detail": "Skill updated."}, status=status.HTTP_200_OK)    
 
 class ProjectRatingViewSet(viewsets.ModelViewSet):
     queryset = ProjectRating.objects.all()
@@ -63,3 +118,31 @@ class EducationViewSet(viewsets.ModelViewSet):
     queryset = Education.objects.all()
     serializer_class = EducationSerializer
     authentication_classes = (TokenAuthentication, )
+
+    @action(methods=['POST'], detail=False)
+    def add_education(self, request):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer =EducationSerializer(data=request.data) 
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()         
+        return Response({"detail": "Education saved.", "data" : serializer.data}, status=status.HTTP_201_CREATED)
+
+    @action(methods=['DELETE'], detail=True)
+    def remove_education(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        education = Education.objects.get(id=pk)
+        education.delete()
+        return Response({"detail": "Education Deleted."}, status=status.HTTP_200_OK)
+    
+    @action(methods=['PUT'], detail=True)
+    def update_education(self, request, pk=None):
+        if not request.user.is_authenticated:
+            return Response({"detail": "Authentication credentials were not provided."}, status=status.HTTP_401_UNAUTHORIZED)
+        education = Education.objects.get(id=pk)
+        serializer = EducationSerializer(education,data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response({"detail": "Education updated."}, status=status.HTTP_200_OK)    
