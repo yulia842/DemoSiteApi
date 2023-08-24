@@ -7,7 +7,7 @@ class Product(models.Model):
     price = models.IntegerField()
 
     def __str__(self):
-        return f"{self.name}, {self.description}, {self.price}"
+        return f"{self.id},{self.name}, {self.description}, {self.price}"
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -15,4 +15,4 @@ class Cart(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return f"{self.product}, {self.user}, {self.quantity}"
+        return f"cart id:{self.id} ,product id : {self.product}, {self.user}, quantity : {self.quantity}"

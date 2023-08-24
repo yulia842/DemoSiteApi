@@ -4,11 +4,11 @@ from .models import Product, Cart
 class ProductSerializer(serializers.ModelSerializer):
     class Meta :
         model = Product
-        fields = "__all__"
+        fields = ['id', 'name', 'description', 'price'] 
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta :
         model = Cart
-        fields = "__all__"
+        fields = ['id', 'user', 'product', 'quantity'] 
 
 
