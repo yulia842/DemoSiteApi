@@ -37,7 +37,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"detail": "Product added to cart", 'data' : serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({"detail": "Product created", 'data' : serializer.data}, status=status.HTTP_201_CREATED)
 
     # Remove product
     @action(methods=['DELETE'], detail=True)
@@ -60,7 +60,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         serializer = ProductSerializer(product, data=request.data, partial = True)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"detail": "Product added to cart", 'data' : serializer.data}, status=status.HTTP_201_CREATED)
+            return Response({"detail": "Product updated", 'data' : serializer.data}, status=status.HTTP_201_CREATED)
 
 
 class CartViewSet(viewsets.ModelViewSet):
